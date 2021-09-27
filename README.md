@@ -6,4 +6,4 @@ Mediapipe, Unity-Barracuda, ONNX を使ってUnity上でての形状認識を実
 :warning:**fork表示がされていませんが、keijiroさんの[HandPoseBarracuda](https://github.com/keijiro/HandPoseBarracuda)をCloneさせて頂き改変しPublishしたものです。**
 
 
-> **諸事情により、一度削除して再Publishしました。**
+> **諸事情により、このリポジトリは一度削除して再Publishされました。**
