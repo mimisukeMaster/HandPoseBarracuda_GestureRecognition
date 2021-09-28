@@ -8,3 +8,7 @@ Mediapipe, Unity-Barracuda, ONNX を使ってUnity上でての形状認識を実
 
 > **諸事情により、このリポジトリは一度削除して再Publishされました。**
 > 一部のデータは消去されました。
+
+## サンプル動画
+https://user-images.githubusercontent.com/81568941/135099353-e6b021ab-8b51-4a83-b762-ad9de784fa3e.mp4
+
