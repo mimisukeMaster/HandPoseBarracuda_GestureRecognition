@@ -1,4 +1,4 @@
-# HandPoseBarracuda-main_HandRecognition
+# HandPoseBarracuda_GestureRecognition
 Mediapipe, Unity-Barracuda, ONNX を使ってUnity上でての形状認識を実装したもの
 
 ### ※まだ開発途中であり、確かな動作は保証しません。開発用途上の都合でリポジトリを作成ました。
@@ -7,3 +7,4 @@ Mediapipe, Unity-Barracuda, ONNX を使ってUnity上でての形状認識を実
 
 
 > **諸事情により、このリポジトリは一度削除して再Publishされました。**
+> 一部のデータは消去されました。
