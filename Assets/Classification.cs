@@ -18,6 +18,12 @@ namespace MediaPipe.HandPose
         [SerializeField] ResourceSet _resources = null;
         HandPipeline _pipelineCla;
         public WebcamInput _webcam = null;
+
+        // History 用の配列とカウンター 2次元リスト
+        List<float> pointVectorList = new List<float>();
+        private int seqCount = 0;
+
+
         // Start is called before the first frame update
         void Start()
         {
@@ -46,7 +52,7 @@ namespace MediaPipe.HandPose
                 KeyPointY.Add(_pipelineCla.GetKeyPoint(i).y);
             }
 
-            
+
             //2 0番目(根本)の手Pointの座標をXY共にとっておく
             float baseX = KeyPointX[0];
             float baseY = KeyPointY[0];
@@ -57,49 +63,61 @@ namespace MediaPipe.HandPose
                 KeyPointX[j] = KeyPointX[j] - baseX;
                 KeyPointY[j] = (KeyPointY[j] - baseY) * -1;
             }
-            
+
             //4 別々になっているX,Yの手の座標値Listを一つのリストにする
             List<float> pointVector = new List<float>();
 
-            for(int m = 0; m < HandPipeline.KeyPointCount; m++)
+            for (int m = 0; m < HandPipeline.KeyPointCount; m++)
             {
                 pointVector.Add(KeyPointX[m]);
                 pointVector.Add(KeyPointY[m]);
             }
-            
+
             //5 合成したListから最大値を見つける  一個一個の要素に対し絶対値をとりその上最大値を見つける
             List<float> AbsKeyPointXY = new List<float>();
 
-            for(int k = 0; k < pointVector.Count; k++)
+            for (int k = 0; k < pointVector.Count; k++)
             {
                 AbsKeyPointXY.Add(Mathf.Abs(pointVector[k]));
             }
             float XYmax = AbsKeyPointXY.Max();
 
             //6 各々のListの各要素に対し, 5 で見つけた最大値で割り正規化  それをまたListに上書きする
-            for(int l = 0; l < pointVector.Count; l++)
+            for (int l = 0; l < pointVector.Count; l++)
             {
                 pointVector[l] = pointVector[l] / XYmax;
             }
-            
-            for(int i = 0; i < pointVector.Count / 2; i++)
+
+            for (int i = 0; i < pointVector.Count / 2; i++)
             {
-                Debug.Log("X[" + i + "]: " + pointVector[i * 2 ] + "  Y[" + i + "]: " + pointVector[i * 2 + 1] + "\n"  );
+                Debug.Log("X[" + i + "]: " + pointVector[i * 2] + "  Y[" + i + "]: " + pointVector[i * 2 + 1] + "\n");
             }
 
 
-            //listを配列に変換 これを推論に持っていく
-            float[] pointVectorArray = pointVector.ToArray();
-            string z = "";
-            Tensor handInput = new Tensor(1, 1, 1, 42,pointVectorArray,z);
+            //listにlistの要素を末尾に追加しシーケンスをUpdateのループにより形成していく これを推論に持っていく
+            pointVectorList.AddRange(pointVector);
 
-            Inference(handInput);
-            handInput.Dispose();
+            seqCount += 1;
+            if (seqCount == 16)
+            {
+                // listをarrayにして渡す
+                Tensor handInput = new Tensor(1, 1, 1, 672, pointVectorList.ToArray(), "");
+
+                // 2次元Listの初期化
+                pointVectorList = new List<float>();
+
+                // カウンタの初期化
+                seqCount = 0;
+
+                Inference(handInput);
+                handInput.Dispose();
+            }
+
         }
 
         private void Inference(Tensor input)
         {
-            //Debug.Log("inputは　" + input);
+
             m_worker.Execute(input);
             Tensor output = m_worker.PeekOutput();
 

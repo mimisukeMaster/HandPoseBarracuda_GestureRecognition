@@ -892,7 +892,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afcdf83d480be7d408de18a208bbb5c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  modelAsset: {fileID: 5022602860645237092, guid: 73080809502c07543bacd34e9fe7757e, type: 3}
+  modelAsset: {fileID: 5022602860645237092, guid: 24f1b40df8a62214e9235b3337f012c9, type: 3}
   targetText: {fileID: 1530523814}
   _resources: {fileID: 11400000, guid: 91bfddd4f6a664d13be4b4a5340a2099, type: 2}
   _webcam: {fileID: 362122829}

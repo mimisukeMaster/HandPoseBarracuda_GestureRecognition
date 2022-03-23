@@ -4,18 +4,18 @@
     {
         var synset = new string[]
         {
-            "Open",
-            "Close",
-            "Pointer",
-            "Good",
-            "Scissor",
-            "Oksign"
+            "Pause",
+            "Crescendo",
+            "Finish",
+            "Shake",
+            "Diminuendo",
+            "Point"
         };
 
         return synset;
     }
 
-    
+
 
 
 }
